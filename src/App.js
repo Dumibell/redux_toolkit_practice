@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import { createStore } from "@reduxjs/toolkit";
+import { Provider, useSelector, useDispatch } from "react-redux";
 
-function App() {
+function reducer(state, action) {
+  if (action.type === "up") {
+    return { ...state, value: state.value + action.step };
+  }
+  return state;
+}
+
+const initialState = { value: 0 };
+
+const store = createStore(reducer, initialState);
+
+function Counter() {
+  const dispatch = useDispatch();
+  const count = useSelector((state) => state.value);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <button onClick={() => dispatch({ type: "up", step: 2 })}>+</button>
+      {count}
     </div>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <Provider store={store}>
+      <div>
+        <Counter></Counter>
+      </div>
+    </Provider>
+  );
+}
