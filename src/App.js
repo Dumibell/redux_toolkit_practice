@@ -1,23 +1,19 @@
-import { createStore } from "@reduxjs/toolkit";
 import { Provider, useSelector, useDispatch } from "react-redux";
-
-function reducer(state, action) {
-  if (action.type === "up") {
-    return { ...state, value: state.value + action.step };
-  }
-  return state;
-}
-
-const initialState = { value: 0 };
-
-const store = createStore(reducer, initialState);
+import store from "./store";
+import { up } from "./counterSlice";
 
 function Counter() {
   const dispatch = useDispatch();
-  const count = useSelector((state) => state.value);
+  const count = useSelector((state) => state.counter.value);
   return (
     <div>
-      <button onClick={() => dispatch({ type: "up", step: 2 })}>+</button>
+      <button
+        onClick={() => {
+          dispatch(up(2));
+        }}
+      >
+        +
+      </button>
       {count}
     </div>
   );
